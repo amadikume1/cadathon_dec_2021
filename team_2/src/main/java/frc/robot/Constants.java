@@ -38,7 +38,17 @@ public final class Constants {
 
     public static final class IntakeConstants {
 
-        public static final int INTAKE_VICTOR = 1; //placeholder
+        public static final int SPIN_FALCON_1 = 1; //placeholder values
+        public static final int SPIN_FALCON_2 = 2;
+        public static final int CENTERING_FALCON_1 = 3;
+        public static final int CENTERING_FALCON_2 = 4;
+
+        public static final int[] SOLENOID_CLAW = {0, 1}; //placeholder
+
+        public final double ROLL_SPEED = 1.0;
+        public final double INTAKE_SPEED = 1.0;
+
+
 
     }
 
@@ -46,8 +56,8 @@ public final class Constants {
         
         public static final int SPRING_MOTOR_PORT = 1; //placeholder
 
-        public static final int SHOOT_SPEED = 1;
-        public static final int RETRACT_SPEED = -1;
+        public static final double SHOOT_SPEED = 1.0;
+        public static final double RETRACT_SPEED = -1.0;
 
     }
 
