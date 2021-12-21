@@ -5,10 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeRetractCommand;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -17,15 +24,23 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
+  DrivetrainSubsystem drivetrainSubsystem;
+  Joystick driverstation;
+  IntakeSubsystem intakeSubsystem;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  
   public RobotContainer() {
+    driverstation = new Joystick(0);
+    drivetrainSubsystem = new DrivetrainSubsystem();
+    intakeSubsystem = new IntakeSubsystem();
     // Configure the button bindings
     configureButtonBindings();
+    drivetrainSubsystem.setDefaultCommand(
+        new RunCommand(() -> drivetrainSubsystem.drive(-driverstation.getRawAxis(0), -driverstation.getRawAxis(2)),
+            drivetrainSubsystem));
+
+
+
   }
 
   /**
@@ -34,15 +49,25 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    JoystickButton button1 = new JoystickButton(driverstation, 1);
+    button1.whenPressed(new IntakeCommand(intakeSubsystem));
+
+    JoystickButton button2 = new JoystickButton(driverstation, 2);
+    button2.whenPressed(new IntakeRetractCommand(intakeSubsystem));
+   
+    JoystickButton autoButton = new JoystickButton(driverstation, 6);
+    autoButton.whenPressed(new SequentialCommandGroup(
+        new RunCommand(() -> drivetrainSubsystem.drive(.75, .75), drivetrainSubsystem).withTimeout(2.5)));
+
+
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
-  }
+  
 }
