@@ -40,6 +40,14 @@ public final class Constants {
 
         public static final int INTAKE_VICTOR = 1; //placeholder
 
+    }
+
+    public static final class SpringConstants {
+        
+        public static final int SPRING_MOTOR_PORT = 1; //placeholder
+
+        public static final int SHOOT_SPEED = 1;
+        public static final int RETRACT_SPEED = -1;
 
     }
 
