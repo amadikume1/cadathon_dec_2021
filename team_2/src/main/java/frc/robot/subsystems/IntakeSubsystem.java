@@ -45,11 +45,12 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeRollers.set(ControlMode.PercentOutput, IntakeConstants.REVERSE_INTAKE_SPEED);
     }
 
+    public void stopIntake() {
+        intakeRollers.set(ControlMode.PercentOutput, 0);
+    }
+
     public void spinCenteringRollers() {
         centeringRollers.set(ControlMode.PercentOutput, IntakeConstants.INTAKE_SPEED);
     }
 
-    public void reverseCenteringRollers() {
-        centeringRollers.set(ControlMode.PercentOutput, IntakeConstants.REVERSE_INTAKE_SPEED);
-    }
 }

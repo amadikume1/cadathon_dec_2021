@@ -47,14 +47,12 @@ public final class Constants {
         public static final double REVERSE_INTAKE_SPEED = -1.0;
 
         public static final double CENTERING_SPEED = 1.0;
-        public static final double REVERSE_CENTERING_SPEED = -1.0;
-
     }
 
     public static final class PivotConstants {
 
-        public static final int SPIN_FALCON_1 = 1;
-        public static final int SPIN_FALCON_2 = 2;
+        public static final int PIVOT_FALCON_1 = 1;
+        public static final int PIVOT_FALCON_2 = 2;
 
         public static final double SPIN_FORWARD_SPEED = 1.0;
         public static final double SPIN_BACKWARD_SPEED = -1.0;
