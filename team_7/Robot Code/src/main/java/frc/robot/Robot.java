@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends TimedRobot {
-    WPI_TalonFX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
+    WPI_TalonFX leftMotor1, leftMotor2, rightMotor1, rightMotor2, shootingMotor1, pickingUpMotor;
 
     private Joystick joystick1 = new Joystick(0); // 0 is the port number
 
@@ -15,12 +15,19 @@ public class Robot extends TimedRobot {
 
     private RobotContainer m_robotContainer;
 
+    private Drive drive;
+
+    private boolean ballPickedUp;
+
+    private button x = new button();
+
   @Override
   public void robotInit() {
       leftMotor1 = new WPI_TalonFX(0); // declare motors
       leftMotor2 = new WPI_TalonFX(1);
       rightMotor1 = new WPI_TalonFX(2);
       rightMotor2 = new WPI_TalonFX(3);
+      shootingMotor1 = new WPI_TalonFX(4); // motor for shooting
       m_robotContainer = new RobotContainer();
   }
 
@@ -45,6 +52,9 @@ public class Robot extends TimedRobot {
         rightMotor1.set(0); // the right motors are negative because they are opposite the left motors, but we still want them to turn the same direction so the robot goes forward/backward instead of spinning.
         rightMotor2.set(0);
     }
+
+    if (time - startTime < 4 && time - startTime > 3) // shoots the ball after the robot has moved forward
+        shootingMotor1.set(1); 
   }
 
   @Override
@@ -62,6 +72,20 @@ public class Robot extends TimedRobot {
       leftMotor2.set(left);
       rightMotor1.set(-right); // the right motors are negative because they are opposite the left motors, but we still want them to turn the same direction so the robot goes forward/backward instead of spinning.
       rightMotor2.set(-right);
+
+      if (x.isPressed()){  // checks if the x button on a controller is pressed.
+        if (time - startTime < 2){ // moves the picking up mechanism down for 2 seconds and picks the ball up.
+          pickinUpMotor.set(1);
+        }
+        pickingUpMotor.set(-1); // moves the mechanism back to the starting position.
+        ballPickedUp = true;
+      }
+
+      if (joystick1.isPressed() && ballPickedUp){  // shoots the ball if the joystick is pressed down and if the robot has a ball.
+        shootingMotor1.set(1);
+      }
+      
+      drive.drive(joystick1.getY(), joystick1.getX()); // drives the robot based on the joystick's x and y coordinates.
   }
 
   @Override
@@ -76,3 +100,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 }
+
