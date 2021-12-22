@@ -7,10 +7,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.BallOutCommand;
+import frc.robot.commands.BallOutCommandDown;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeRetractCommand;
+import frc.robot.subsystems.BallOutSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -27,6 +32,8 @@ public class RobotContainer {
   DrivetrainSubsystem drivetrainSubsystem;
   Joystick driverstation;
   IntakeSubsystem intakeSubsystem;
+  BallOutSubsystem ballOutSubsystem;
+  FlywheelSubsystem flywheelSubsystem;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   
   public RobotContainer() {
@@ -55,8 +62,18 @@ public class RobotContainer {
 
     JoystickButton button2 = new JoystickButton(driverstation, 2);
     button2.whenPressed(new IntakeRetractCommand(intakeSubsystem));
-   
-    JoystickButton autoButton = new JoystickButton(driverstation, 6);
+    
+    JoystickButton button4 = new JoystickButton(driverstation, 4);
+    button4.whenPressed(new FlywheelCommand(flywheelSubsystem));
+
+    JoystickButton button5 = new JoystickButton(driverstation, 5);
+    button5.whenPressed(new BallOutCommand(ballOutSubsystem));
+    
+    JoystickButton button6 = new JoystickButton(driverstation, 6);
+    button6.whenPressed(new BallOutCommandDown(ballOutSubsystem));
+
+
+    JoystickButton autoButton = new JoystickButton(driverstation, 3);
     autoButton.whenPressed(new SequentialCommandGroup(
         new RunCommand(() -> drivetrainSubsystem.drive(.75, .75), drivetrainSubsystem).withTimeout(2.5)));
 
